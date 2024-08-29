@@ -63,17 +63,19 @@ class MyApp extends StatelessWidget {
                       ),
                       Container(
                         height: 64,
-                        width: 80,
-                        color: Colors.red[100],
-                        child: Center(
-                            child: ElevatedButton(
-                          child: const Text(
-                            '答える',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          style: ElevatedButton.styleFrom(),
+                        width: 64,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.red,
+                              shape: const CircleBorder()),
                           onPressed: () {},
-                        )),
+                          child: const Text(
+                            '解\n答',
+                            style: TextStyle(fontSize: 22),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -91,20 +93,27 @@ class MyApp extends StatelessWidget {
                     )),
                 Container(
                   margin: const EdgeInsets.all(16),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(
-                        Icons.arrow_back_ios_rounded,
-                        size: 64,
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.arrow_back_ios_rounded),
+                        iconSize: 64,
                       ),
-                      Icon(
-                        Icons.record_voice_over_rounded,
-                        size: 64,
+                      IconButton(
+                        onPressed: () {},
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.grey[200],
+                          side: BorderSide(color: Colors.grey, width: 2),
+                        ),
+                        icon: Icon(Icons.record_voice_over_rounded),
+                        iconSize: 64,
                       ),
-                      Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 64,
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.arrow_forward_ios_rounded),
+                        iconSize: 64,
                       ),
                     ],
                   ),
