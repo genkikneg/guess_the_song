@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "238362214629",
+    "project_id": "jp-miso-guesong",
+    "storage_bucket": "jp-miso-guesong.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238362214629:android:68055378e8ef512a23140c",
+        "android_client_info": {
+          "package_name": "jp.miso.guesong"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfKbfWHc4zoOXxMKNS65XtrYtz_OE3M4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
