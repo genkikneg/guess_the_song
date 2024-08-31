@@ -1,8 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:guess_the_song/dbRead.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
@@ -12,6 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final db = Dbread();
     return MaterialApp(
       theme: ThemeData(),
       home: Scaffold(
@@ -72,7 +76,13 @@ class MyApp extends StatelessWidget {
                               foregroundColor: Colors.white,
                               backgroundColor: Colors.red,
                               shape: const CircleBorder()),
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  Column();
+                                });
+                          },
                           child: const Text(
                             '解\n答',
                             style: TextStyle(fontSize: 22),
@@ -84,16 +94,41 @@ class MyApp extends StatelessWidget {
                   ),
                 ),
                 Container(
-                    margin: const EdgeInsets.all(16),
-                    padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
-                    height: MediaQuery.of(context).size.height / 2,
-                    width: MediaQuery.of(context).size.width / 1,
-                    color: Colors.red[50],
-                    child: const Text(
-                      '青に似た酸っぱい春とライラック',
-                      style: TextStyle(fontSize: 32),
-                      textAlign: TextAlign.center,
-                    )),
+                  margin: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
+                  height: MediaQuery.of(context).size.height / 2,
+                  width: MediaQuery.of(context).size.width / 1,
+                  color: Colors.red[50],
+                  child: FutureBuilder<String>(
+                      future: db.read(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<String> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          //非同期中に表示する内容:下はローディングインジケータ
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          //スナップショットでエラー起きた時
+                          return Text(
+                            'エラー${snapshot.error}',
+                            style: const TextStyle(fontSize: 32),
+                            textAlign: TextAlign.center,
+                          );
+                        } else if (snapshot.hasData) {
+                          return Text(
+                            snapshot.data!,
+                            style: const TextStyle(fontSize: 32),
+                            textAlign: TextAlign.center,
+                          );
+                        } else {
+                          return const Text(
+                            'データがありません',
+                            style: TextStyle(fontSize: 32),
+                            textAlign: TextAlign.center,
+                          );
+                        }
+                      }),
+                ),
                 Container(
                   margin: const EdgeInsets.all(16),
                   child: Row(
