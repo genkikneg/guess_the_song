@@ -13,9 +13,11 @@ class Dbread {
       //ドキュメントの取得
       final docRef = db.collection('MrsGreenApple').doc('青と夏');
 
-      const source = Source.cache;
+      // const source = Source.cache;
 
-      DocumentSnapshot doc = await docRef.get(const GetOptions(source: source));
+      DocumentSnapshot doc = await docRef.get(
+          // const GetOptions(source: source)
+          );
 
       final data = doc.data() as Map<String, dynamic>;
 

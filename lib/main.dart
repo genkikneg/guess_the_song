@@ -76,13 +76,7 @@ class MyApp extends StatelessWidget {
                               foregroundColor: Colors.white,
                               backgroundColor: Colors.red,
                               shape: const CircleBorder()),
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  Column();
-                                });
-                          },
+                          onPressed: () {},
                           child: const Text(
                             '解\n答',
                             style: TextStyle(fontSize: 22),
