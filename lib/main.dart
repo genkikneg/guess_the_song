@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:guess_the_song/ans_button.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,7 +48,7 @@ class MyApp extends ConsumerWidget {
     final displayedNum = ref.watch(displeyedNumProvider);
     final asyncLyrics = ref.watch(lyricsProvider);
     return MaterialApp(
-      theme: ThemeData(),
+      // theme: ThemeData(),
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.green[100],
@@ -98,22 +99,7 @@ class MyApp extends ConsumerWidget {
                           ],
                         ),
                       ),
-                      Container(
-                        height: 64,
-                        width: 64,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: Colors.red,
-                              shape: const CircleBorder()),
-                          onPressed: () {},
-                          child: const Text(
-                            '解\n答',
-                            style: TextStyle(fontSize: 22),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
+                      AnsButton(),
                     ],
                   ),
                 ),
