@@ -14,8 +14,12 @@ void main() async {
 final lyricsProvider = FutureProvider<List<String>>((ref) async {
   final db = FirebaseFirestore.instance;
   try {
-    final docRef = db.collection('MrsGreenApple').doc('青と夏');
-    DocumentSnapshot doc = await docRef.get();
+    final docRef = db.collection('MrsGreenApple');
+    final QuerySnapshot querySnapshot = await docRef.get();
+    final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
+    docs.shuffle();
+    DocumentSnapshot doc = docs.first;
+    debugPrint(doc.id);
 
     final data = doc.data() as Map<String, dynamic>;
     String lyrics = data['歌詞'];
@@ -114,9 +118,9 @@ class MyApp extends ConsumerWidget {
                   ),
                 ),
                 Container(
-                    margin: const EdgeInsets.all(16),
-                    padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
-                    height: MediaQuery.of(context).size.height / 1.7,
+                    margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                    height: MediaQuery.of(context).size.height / 1.65,
                     width: MediaQuery.of(context).size.width / 1,
                     color: Colors.red[50],
                     child: asyncLyrics.when(
@@ -127,7 +131,7 @@ class MyApp extends ConsumerWidget {
                           children: displayedItems
                               .map((item) => Text(
                                     item,
-                                    style: const TextStyle(fontSize: 30),
+                                    style: const TextStyle(fontSize: 22.5),
                                     textAlign: TextAlign.center,
                                   ))
                               .toList(),
@@ -154,7 +158,16 @@ class MyApp extends ConsumerWidget {
                         onPressed: () {
                           final notifier =
                               ref.read(displeyedNumProvider.notifier);
-                          notifier.state += 1;
+                          if (displayedNum < 10 && displayedNum > 0) {
+                            notifier.state += 1;
+                          } else if (displayedNum <= 0) {
+                            notifier.state = 1;
+                          } else {
+                            notifier.state = 10;
+                          }
+                          // final notifier =
+                          //     ref.read(displeyedNumProvider.notifier);
+                          // notifier.state += 1;
                         },
                         style: IconButton.styleFrom(
                           backgroundColor: Colors.grey[200],
