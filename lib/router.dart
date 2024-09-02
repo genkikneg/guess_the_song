@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:guess_the_song/choose_level.dart';
 import 'package:guess_the_song/main.dart';
 import 'package:guess_the_song/result.dart';
+import 'package:guess_the_song/wrong_result.dart';
 
 final GoRouter _router = GoRouter(initialLocation: '/play', routes: <RouteBase>[
   GoRoute(
@@ -21,6 +22,12 @@ final GoRouter _router = GoRouter(initialLocation: '/play', routes: <RouteBase>[
         path: 'result',
         builder: (BuildContext context, GoRouterState state) {
           return const Result();
+        },
+      ),
+      GoRoute(
+        path: 'wrong_result',
+        builder: (BuildContext context, GoRouterState state) {
+          return const WrongResult();
         },
       ),
     ],

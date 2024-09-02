@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:guess_the_song/result.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/services.dart';
 import 'package:guess_the_song/main.dart';
@@ -65,7 +64,7 @@ Widget _searchListView(WidgetRef ref, List<String> songNames) {
   final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
   final searchIndexList = ref.watch(searchIndexListProvider);
   bool isRight;
-  return Container(
+  return SizedBox(
     height: 400,
     child: ListView.builder(
       itemCount: searchIndexList.length,
@@ -74,7 +73,7 @@ Widget _searchListView(WidgetRef ref, List<String> songNames) {
         isRight = _judgAns(songNames[index], ref);
         return Card(
           child: ListTile(
-            onTap: () => isRight ? context.go('/result') : _wrong(context),
+            onTap: () => isRight ? context.go('/result') : _wrong(context, ref),
             title: Text(songNames[index]),
           ),
         );
@@ -83,8 +82,10 @@ Widget _searchListView(WidgetRef ref, List<String> songNames) {
   );
 }
 
-void _wrong(context) {
+void _wrong(context, WidgetRef ref) {
+  final notifier = ref.read(heartNumProvider.notifier);
   HapticFeedback.mediumImpact();
+  notifier.state -= 1;
   Navigator.pop(context);
 }
 

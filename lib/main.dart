@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:guess_the_song/heart.dart';
 import 'firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:guess_the_song/ans_button.dart';
-import 'package:go_router/go_router.dart';
 import 'package:guess_the_song/router.dart';
+import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +45,8 @@ final lyricsProvider = FutureProvider<List<String>>((ref) async {
 
 //プロバイダー
 final displeyedNumProvider = StateProvider<int>((ref) => 1);
+final heartNumProvider = StateProvider<int>((ref) => 3);
+final isUntouchableProvider = StateProvider<bool>((ref) => false);
 //歌詞のキャッシュ
 List<String> lyrics = [];
 
@@ -64,6 +67,19 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final displayedNum = ref.watch(displeyedNumProvider);
     final asyncLyrics = ref.watch(lyricsProvider);
+    final heartNum = ref.watch(heartNumProvider);
+    final isUntouchable = ref.watch(isUntouchableProvider);
+    if (heartNum == 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final notifier = ref.read(isUntouchableProvider.notifier);
+        notifier.state = true;
+        Future.delayed(const Duration(seconds: 1), () {
+          if (context.mounted) {
+            context.go('/wrong_result');
+          }
+        });
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green[100],
@@ -89,32 +105,12 @@ class HomeScreen extends ConsumerWidget {
                       child: Center(
                         child: Text(
                           '$displayedNum',
-                          style: TextStyle(fontSize: 32),
+                          style: const TextStyle(fontSize: 32),
                         ),
                       ),
                     ),
-                    Container(
-                      height: 64,
-                      width: 128,
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.favorite_border,
-                            size: 32,
-                          ),
-                          Icon(
-                            Icons.favorite_border,
-                            size: 32,
-                          ),
-                          Icon(
-                            Icons.favorite_border,
-                            size: 32,
-                          ),
-                        ],
-                      ),
-                    ),
-                    AnsButton(),
+                    const Heart(),
+                    const AnsButton(),
                   ],
                 ),
               ),
@@ -151,34 +147,33 @@ class HomeScreen extends ConsumerWidget {
                   children: [
                     IconButton(
                       onPressed: () {},
-                      icon: Icon(Icons.arrow_back_ios_rounded),
+                      icon: const Icon(Icons.arrow_back_ios_rounded),
                       iconSize: 64,
                     ),
                     IconButton(
-                      onPressed: () {
-                        final notifier =
-                            ref.read(displeyedNumProvider.notifier);
-                        if (displayedNum < 10 && displayedNum > 0) {
-                          notifier.state += 1;
-                        } else if (displayedNum <= 0) {
-                          notifier.state = 1;
-                        } else {
-                          notifier.state = 10;
-                        }
-                        // final notifier =
-                        //     ref.read(displeyedNumProvider.notifier);
-                        // notifier.state += 1;
-                      },
+                      onPressed: isUntouchable
+                          ? null
+                          : () {
+                              final notifier =
+                                  ref.read(displeyedNumProvider.notifier);
+                              if (displayedNum < 10 && displayedNum > 0) {
+                                notifier.state += 1;
+                              } else if (displayedNum <= 0) {
+                                notifier.state = 1;
+                              } else {
+                                notifier.state = 10;
+                              }
+                            },
                       style: IconButton.styleFrom(
                         backgroundColor: Colors.grey[200],
-                        side: BorderSide(color: Colors.grey, width: 2),
+                        side: const BorderSide(color: Colors.grey, width: 2),
                       ),
-                      icon: Icon(Icons.record_voice_over_rounded),
+                      icon: const Icon(Icons.record_voice_over_rounded),
                       iconSize: 64,
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: Icon(Icons.arrow_forward_ios_rounded),
+                      icon: const Icon(Icons.arrow_forward_ios_rounded),
                       iconSize: 64,
                     ),
                   ],

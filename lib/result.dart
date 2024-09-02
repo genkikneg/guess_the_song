@@ -17,6 +17,7 @@ class Result extends StatelessWidget {
       ),
       body: Center(
           child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           const Text(
             '~~正解!~~',
