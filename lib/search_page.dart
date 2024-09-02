@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:guess_the_song/result.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter/services.dart';
+import 'package:guess_the_song/main.dart';
 
 final List<String> songNames = [];
 
@@ -61,22 +64,31 @@ Widget _searchTextField(WidgetRef ref, List<String> songNames) {
 Widget _searchListView(WidgetRef ref, List<String> songNames) {
   final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
   final searchIndexList = ref.watch(searchIndexListProvider);
+  bool isRight;
   return Container(
     height: 400,
     child: ListView.builder(
       itemCount: searchIndexList.length,
       itemBuilder: (context, int index) {
         index = searchIndexListNotifier.state[index];
+        isRight = _judgAns(songNames[index], ref);
         return Card(
           child: ListTile(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const Result()));
-            },
+            onTap: () => isRight ? context.go('/result') : _wrong(context),
             title: Text(songNames[index]),
           ),
         );
       },
     ),
   );
+}
+
+void _wrong(context) {
+  HapticFeedback.mediumImpact();
+  Navigator.pop(context);
+}
+
+bool _judgAns(String songName, WidgetRef ref) {
+  final choosedSongName = ref.watch(choosedSongNameProvider);
+  return songName == choosedSongName;
 }
