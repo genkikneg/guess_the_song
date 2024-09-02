@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:guess_the_song/ans_button.dart';
 import 'package:guess_the_song/router.dart';
 import 'package:go_router/go_router.dart';
+import 'package:guess_the_song/choose_level.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,13 +16,15 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
+//プロバイダー
 final choosedSongNameProvider = StateProvider<String>((ref) => '');
-
 final lyricsProvider = FutureProvider<List<String>>((ref) async {
   final db = FirebaseFirestore.instance;
-  // final choosdSongName = ref.watch(choosedSongNameProvider);
   try {
-    final docRef = db.collection('MrsGreenApple');
+    final choosedLevelNum = ref.watch(choosedLevelNumProvider);
+    final docRef = db
+        .collection('MrsGreenApple')
+        .where('level', isEqualTo: choosedLevelNum);
     final QuerySnapshot querySnapshot = await docRef.get();
     final List<QueryDocumentSnapshot> docs = querySnapshot.docs;
     docs.shuffle();
@@ -42,8 +45,6 @@ final lyricsProvider = FutureProvider<List<String>>((ref) async {
     rethrow;
   }
 });
-
-//プロバイダー
 final displeyedNumProvider = StateProvider<int>((ref) => 1);
 final heartNumProvider = StateProvider<int>((ref) => 3);
 final isUntouchableProvider = StateProvider<bool>((ref) => false);

@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:guess_the_song/main.dart';
 
 final List<String> songNames = [];
-
+//プロバイダー
 final songProvider = FutureProvider<List<String>>((ref) async {
   final db = FirebaseFirestore.instance;
   try {
@@ -21,7 +21,6 @@ final songProvider = FutureProvider<List<String>>((ref) async {
     rethrow;
   }
 });
-
 final StateProvider<List<int>> searchIndexListProvider =
     StateProvider((ref) => []);
 
@@ -69,12 +68,15 @@ Widget _searchListView(WidgetRef ref, List<String> songNames) {
     child: ListView.builder(
       itemCount: searchIndexList.length,
       itemBuilder: (context, int index) {
-        index = searchIndexListNotifier.state[index];
-        isRight = _judgAns(songNames[index], ref);
+        // index = searchIndexListNotifier.state[index];
+        final songIndex = searchIndexListNotifier.state[index];
         return Card(
           child: ListTile(
-            onTap: () => isRight ? context.go('/result') : _wrong(context, ref),
-            title: Text(songNames[index]),
+            onTap: () {
+              isRight = _judgAns(songNames[songIndex], ref);
+              isRight ? context.go('/result') : _wrong(context, ref);
+            },
+            title: Text(songNames[songIndex]),
           ),
         );
       },
@@ -91,5 +93,7 @@ void _wrong(context, WidgetRef ref) {
 
 bool _judgAns(String songName, WidgetRef ref) {
   final choosedSongName = ref.watch(choosedSongNameProvider);
+  debugPrint('合ってる？$songName');
+  debugPrint('正解:$choosedSongName');
   return songName == choosedSongName;
 }
