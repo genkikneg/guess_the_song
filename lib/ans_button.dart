@@ -36,10 +36,17 @@ class AnsButton extends ConsumerWidget {
                                   height: 15,
                                 ),
                                 ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      fixedSize: const Size(200, 100),
+                                    ),
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child: const Text('閉じる'))
+                                    child: const Text(
+                                      '閉じる',
+                                      style: TextStyle(fontSize: 32),
+                                      textAlign: TextAlign.center,
+                                    ))
                               ],
                             ),
                           ),

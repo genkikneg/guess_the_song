@@ -5,7 +5,7 @@ import 'package:guess_the_song/main.dart';
 import 'package:guess_the_song/result.dart';
 import 'package:guess_the_song/wrong_result.dart';
 
-final GoRouter _router = GoRouter(initialLocation: '/play', routes: <RouteBase>[
+final GoRouter _router = GoRouter(initialLocation: '/', routes: <RouteBase>[
   GoRoute(
     path: '/',
     builder: (BuildContext context, GoRouterState state) {

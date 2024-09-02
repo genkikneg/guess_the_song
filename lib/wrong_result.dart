@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:guess_the_song/reset_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class WrongResult extends StatelessWidget {
+class WrongResult extends ConsumerWidget {
   const WrongResult({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
@@ -28,8 +30,18 @@ class WrongResult extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           ElevatedButton(
-              onPressed: () => context.go('/play'),
-              child: const Text('もう一度遊ぶ')),
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(200, 100),
+              ),
+              onPressed: () {
+                resetState(ref);
+                context.go('/');
+              },
+              child: const Text(
+                'もう一度遊ぶ',
+                style: TextStyle(fontSize: 25),
+                textAlign: TextAlign.center,
+              )),
         ],
       )),
     );
