@@ -1,16 +1,26 @@
-# guess_the_song
+# 曲あてアプリ（Guess The Song)
 
-A new Flutter project.
+## 概要
+歌詞の一部から曲名を当てるクイズ形式のアプリです。
+現在はMrs. Green Appleの曲のみ。
+Flutterを用いて、スマホでも使いやすいUIで開発しました。  
+友人との曲あてクイズをきっかけに、出題者も楽しめるアプリを個人で制作しました。
 
-## Getting Started
+## 使用技術
+- 言語：Dart
+- フレームワーク：Flutter
+- DB：Firebase
 
-This project is a starting point for a Flutter application.
+## 機能
+- ランダムに歌詞の一部を表示
+- 最大10回までフレーズを追加表示可能(ヒント機能)
+- 入力式で曲名を回答、3回間違えると終了
+- 正解・不正解のフィードバックを表示
 
-A few resources to get you started if this is your first Flutter project:
+## 工夫点
+- 実際に人に遊んでもらうことを前提に、シンプルで直感的なUIを意識  
+- スマホ画面でも操作しやすいよう、ボタン配置や文字サイズを調整  
+- データをFirebaseで管理し、後から曲や歌詞を追加できる構成にした
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 開発期間
+約1カ月
